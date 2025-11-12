@@ -5,11 +5,9 @@ interface AppointmentDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   appointment: Appointment | null;
-  petCareTip: string;
-  isLoadingTip: boolean;
 }
 
-const AppointmentDetailModal: React.FC<AppointmentDetailModalProps> = ({ isOpen, onClose, appointment, petCareTip, isLoadingTip }) => {
+const AppointmentDetailModal: React.FC<AppointmentDetailModalProps> = ({ isOpen, onClose, appointment }) => {
   if (!isOpen || !appointment) {
     return null;
   }
@@ -22,12 +20,8 @@ const AppointmentDetailModal: React.FC<AppointmentDetailModalProps> = ({ isOpen,
         <p className="text-gray-700 dark:text-gray-300 mb-6">Lịch hẹn của bạn cho <span className="font-semibold">{appointment.petName}</span> ({appointment.petType}) vào ngày <span className="font-semibold">{new Date(appointment.appointmentDate).toLocaleDateString('vi-VN')}</span> đã được xác nhận.</p>
         
         <div className="bg-teal-50 dark:bg-gray-700 border-l-4 border-teal-500 dark:border-teal-400 text-teal-800 dark:text-teal-200 p-4 rounded-md text-left mb-6">
-            <h4 className="font-bold mb-2">Mẹo chăm sóc thú cưng dành cho bạn:</h4>
-            {isLoadingTip ? (
-                <p className="italic">Đang tạo mẹo chăm sóc riêng cho bạn...</p>
-            ) : (
-                <p className="italic">{petCareTip}</p>
-            )}
+            <h4 className="font-bold mb-2">Mẹo chăm sóc thú cưng:</h4>
+            <p className="italic">Hãy nhớ dành cho thú cưng của bạn nhiều tình yêu thương và một nơi nghỉ ngơi thoải mái sau chuyến thăm khám. Liên hệ với chúng tôi nếu bạn có bất kỳ lo ngại nào!</p>
         </div>
 
         <button

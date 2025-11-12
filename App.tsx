@@ -4,6 +4,8 @@
 
 
 
+
+
 import React, { useState, useEffect } from 'react';
 import { FaPaw, FaUser, FaSignOutAlt, FaSun, FaMoon, FaStar, FaQuoteLeft, FaBoxOpen } from 'react-icons/fa';
 
@@ -17,7 +19,6 @@ import UserAdminPanel from './components/UserAdminPanel';
 import AppointmentDetailModal from './components/AppointmentDetailModal';
 import AppointmentViewModal from './components/AppointmentViewModal';
 import UserAppointments from './components/UserAppointments';
-import { generatePetCareTip } from './services/geminiService';
 import TeamCard from './components/TeamCard';
 import TeamEditModal from './components/TeamEditModal';
 import UserEditModal from './components/UserEditModal';
@@ -88,10 +89,6 @@ function App() {
   const [selectedProductForDetail, setSelectedProductForDetail] = useState<Product | null>(null);
 
 
-  // Gemini state
-  const [petCareTip, setPetCareTip] = useState('');
-  const [isLoadingTip, setIsLoadingTip] = useState(false);
-
   // Pagination & Filter States
   const [shopCurrentPage, setShopCurrentPage] = useState(1);
   const PRODUCTS_PER_PAGE = 6;
@@ -122,25 +119,6 @@ function App() {
       servicesSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  useEffect(() => {
-    const fetchPetCareTip = async () => {
-      if (lastBookedAppointment) {
-        setIsLoadingTip(true);
-        try {
-            const tip = await generatePetCareTip(lastBookedAppointment.petType, lastBookedAppointment.serviceName);
-            setPetCareTip(tip);
-        } catch (error) {
-            // Fix: The 'error' object in a catch block is of type 'unknown'. Convert it to a string before using it in a template literal.
-            console.error(`Failed to fetch pet care tip: ${String(error)}`);
-            setPetCareTip("Hãy nhớ dành cho thú cưng của bạn nhiều tình yêu thương và một nơi nghỉ ngơi thoải mái sau chuyến thăm khám.");
-        } finally {
-            setIsLoadingTip(false);
-        }
-      }
-    };
-    fetchPetCareTip();
-  }, [lastBookedAppointment]);
 
   const formatPrice = (price: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
@@ -582,8 +560,6 @@ function App() {
         isOpen={isAppointmentDetailModalOpen}
         onClose={() => setIsAppointmentDetailModalOpen(false)}
         appointment={lastBookedAppointment}
-        petCareTip={petCareTip}
-        isLoadingTip={isLoadingTip}
       />
       <AppointmentViewModal 
         isOpen={isAppointmentViewModalOpen}
